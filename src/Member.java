@@ -12,12 +12,6 @@ import java.time.format.ResolverStyle;
  */
 
 public class Member {
-    // Atribut Private
-    private String nama;
-    private String noTelepon;
-    private String tanggalDaftar;
-    private String jenisPaket;
-
     // Konstanta (Magic String & Regex ditaruh di sini)
     public static final String DEFAULT_NAMA = "Unknown Member";
     public static final String DEFAULT_NO_TELEPON = "000000000000";
@@ -25,10 +19,14 @@ public class Member {
     public static final String DEFAULT_JENIS_PAKET = "Basic";
     public static final String PHONE_REGEX = "^0\\d{9,}$";
     public static final String[] VALID_PAKET = {"Basic", "Premium", "VIP"};
-
     // Formatter tanggal dengan pola ketat "dd-MM-yyyy"
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
             .withResolverStyle(ResolverStyle.STRICT);
+    // Atribut Private
+    private String nama;
+    private String noTelepon;
+    private String tanggalDaftar;
+    private String jenisPaket;
 
 
     // Constructor 1
@@ -72,19 +70,39 @@ public class Member {
         this(DEFAULT_NAMA, DEFAULT_NO_TELEPON, DEFAULT_TANGGAL_DAFTAR, DEFAULT_JENIS_PAKET);
     }
 
+    public static String capitalizeWords(String str) {
+        if (str == null || str.trim().isEmpty()) {
+            return str;
+        }
+
+        // Memecah kalimaat berdasarkan spasi
+        String[] words = str.trim().split("\\s+");
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                // Mengubah huruf pertama jadi kapital, sisanya jadi huruf kecil
+                String capitalizeWords = Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
+                result.append(capitalizeWords).append(" ");
+            }
+        }
+
+        return result.toString().trim();
+    }
+
+    //      --- GETTER ---
+
     /**
      * Memeriksa apakah terdapat atribut member yang maasih menggunakan nilai default
-     * 
+     *
      * @return true jika setidaknya ada satu atribut yang memakai nilai default
      */
     public boolean hasDefaultValues() {
         return DEFAULT_NAMA.equals(this.nama) ||
-        DEFAULT_NO_TELEPON.equals(this.noTelepon) ||
-        DEFAULT_TANGGAL_DAFTAR.equals(this.tanggalDaftar) ||
-        DEFAULT_JENIS_PAKET.equals(this.jenisPaket);
+                DEFAULT_NO_TELEPON.equals(this.noTelepon) ||
+                DEFAULT_TANGGAL_DAFTAR.equals(this.tanggalDaftar) ||
+                DEFAULT_JENIS_PAKET.equals(this.jenisPaket);
     }
-
-    //      --- GETTER ---
 
     /**
      * Mengembalikan nilai nama member
@@ -94,36 +112,6 @@ public class Member {
     public String getNama() {
         return this.nama;
     }
-
-    /**
-     * Mengembalikan nilai no Telepon member
-     *
-     * @return nilai dari atribut noTelepon;
-     */
-    public String getNoTelepon() {
-        return this.noTelepon;
-    }
-
-    /**
-     * Mengembalikan nilai Tanggal daftar member
-     *
-     * @return nilai dari atribut tanggalDaftar
-     */
-    public String getTanggalDaftar() {
-        return this.tanggalDaftar;
-    }
-
-    /**
-     * Mengembalikan nilai jenis paket member
-     *
-     * @return nilai dari atribut jenisPaket
-     */
-    public String getJenisPaket() {
-        return this.jenisPaket;
-    }
-
-
-    //      --- SETTER DENGAN VALIDASI --
 
     /**
      * Mengatur nama lengkap member dengan melakukan validasi
@@ -148,6 +136,18 @@ public class Member {
             }
         }
     }
+
+    /**
+     * Mengembalikan nilai no Telepon member
+     *
+     * @return nilai dari atribut noTelepon;
+     */
+    public String getNoTelepon() {
+        return this.noTelepon;
+    }
+
+
+    //      --- SETTER DENGAN VALIDASI --
 
     /**
      * Mengatur nomor telepon member dengan validasi,
@@ -175,6 +175,15 @@ public class Member {
     }
 
     /**
+     * Mengembalikan nilai Tanggal daftar member
+     *
+     * @return nilai dari atribut tanggalDaftar
+     */
+    public String getTanggalDaftar() {
+        return this.tanggalDaftar;
+    }
+
+    /**
      * Mengatur tanggal daftar member dengan memanggil fungsi validasi dan parsing terpisah
      *
      * @param tanggalDaftar tanggal saat member mendaftar
@@ -188,6 +197,57 @@ public class Member {
 
             if (this.tanggalDaftar == null) {
                 this.tanggalDaftar = DEFAULT_TANGGAL_DAFTAR;
+            }
+        }
+    }
+
+    /**
+     * Mengembalikan nilai jenis paket member
+     *
+     * @return nilai dari atribut jenisPaket
+     */
+    public String getJenisPaket() {
+        return this.jenisPaket;
+    }
+
+    /**
+     * Mengatur jenis paket yang dipilih member
+     * agar tidak null dan kosong
+     *
+     * @param jenisPaket jenis paket yang dipilih member
+     * @throws IllegalArgumentException jika jenis paket kosong atau null
+     */
+    public void setJenisPaket(String jenisPaket) {
+        try {
+            if (jenisPaket == null || jenisPaket.trim().isEmpty()) {
+                throw new IllegalArgumentException("Jenis paket tidak boleh kosong!");
+            }
+
+            String input = jenisPaket.trim();
+            boolean isValid = false;
+
+            //Validasi menggunakan konstanta VALID_PAKET
+            for (String paket : VALID_PAKET) {
+                if (paket.equalsIgnoreCase(input)) {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            if (!isValid) {
+                throw new IllegalArgumentException("Jenis paket harus berupa: " + String.join(", ", VALID_PAKET));
+            }
+
+            if (input.equalsIgnoreCase("VIP")) {
+                this.jenisPaket = "VIP";
+            } else {
+                this.jenisPaket = Character.toUpperCase(input.charAt(0)) + input.substring(1).toLowerCase();
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Penolakan Validasi: " + e.getMessage());
+
+            if (this.jenisPaket == null) {
+                this.jenisPaket = DEFAULT_JENIS_PAKET;
             }
         }
     }
@@ -224,48 +284,6 @@ public class Member {
     }
 
     /**
-     * Mengatur jenis paket yang dipilih member
-     * agar tidak null dan kosong
-     *
-     * @param jenisPaket jenis paket yang dipilih member
-     * @throws IllegalArgumentException jika jenis paket kosong atau null
-     */
-    public void setJenisPaket(String jenisPaket) {
-        try {
-            if (jenisPaket == null || jenisPaket.trim().isEmpty()) {
-                throw new IllegalArgumentException("Jenis paket tidak boleh kosong!");
-            }
-
-            String input = jenisPaket.trim();
-            boolean isValid = false;
-
-            //Validasi menggunakan konstanta VALID_PAKET
-            for (String paket: VALID_PAKET) {
-                if (paket.equalsIgnoreCase(input)) {
-                    isValid = true;
-                    break;
-                }
-            }
-
-            if (!isValid) {
-                throw new IllegalArgumentException("Jenis paket harus berupa: " + String.join(", ", VALID_PAKET));
-            }
-
-            if (input.equalsIgnoreCase("VIP")) {
-                this.jenisPaket = "VIP";
-            } else {
-                this.jenisPaket = Character.toUpperCase(input.charAt(0)) + input.substring(1).toLowerCase();
-            }
-        } catch (IllegalArgumentException e) {
-            System.out.println("Penolakan Validasi: " + e.getMessage());
-
-            if (this.jenisPaket == null) {
-                this.jenisPaket = DEFAULT_JENIS_PAKET;
-            }
-        }
-    }
-
-    /**
      * Mengembalikan representasi string dari objek Member yang berisi informasi lengkap
      * meliputi nama, nomor telepon, tanggal daftar, dan jenis paket.
      *
@@ -277,25 +295,5 @@ public class Member {
                 " | No Telepon: " + noTelepon +
                 " | Tanggal Daftar: " + tanggalDaftar +
                 " | Jenis Paket: " + jenisPaket + "]";
-    }
-
-    public static String capitalizeWords(String str) {
-        if (str == null || str.trim().isEmpty()) {
-            return str;
-        }
-
-        // Memecah kalimaat berdasarkan spasi
-        String[] words = str.trim().split("\\s+");
-        StringBuilder result = new StringBuilder();
-
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                // Mengubah huruf pertama jadi kapital, sisanya jadi huruf kecil
-                String capitalizeWords = Character.toUpperCase(word.charAt(0)) + word.substring(1).toLowerCase();
-                result.append(capitalizeWords).append(" ");
-            }
-        }
-
-        return result.toString().trim();
     }
 }
