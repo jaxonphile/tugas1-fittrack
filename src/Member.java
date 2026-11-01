@@ -237,12 +237,18 @@ public class Member {
             }
 
             String input = jenisPaket.trim();
+            boolean isValid = false;
 
-            // Validasi apakah input sesuai dengan pilihan yang diizinkan
-            if (!input.equalsIgnoreCase("Basic") &&
-                    !input.equalsIgnoreCase("Premium") &&
-                    !input.equalsIgnoreCase("VIP")) {
-                throw new IllegalArgumentException("Jenis paket harus berupa: Basic, Premium, atau VIP");
+            //Validasi menggunakan konstanta VALID_PAKET
+            for (String paket: VALID_PAKET) {
+                if (paket.equalsIgnoreCase(input)) {
+                    isValid = true;
+                    break;
+                }
+            }
+
+            if (!isValid) {
+                throw new IllegalArgumentException("Jenis paket harus berupa: " + String.join(", ", VALID_PAKET));
             }
 
             if (input.equalsIgnoreCase("VIP")) {
