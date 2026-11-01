@@ -24,6 +24,7 @@ public class Member {
     public static final String DEFAULT_TANGGAL_DAFTAR = "01-01-2026";
     public static final String DEFAULT_JENIS_PAKET = "Basic";
     public static final String PHONE_REGEX = "^0\\d{9,}$";
+    public static final String[] VALID_PAKET = {"Basic", "Premium", "VIP"};
 
     // Formatter tanggal dengan pola ketat "dd-MM-yyyy"
     public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-uuuu")
