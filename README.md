@@ -90,3 +90,18 @@ Sistem pendataan member berbasis Java console untuk gym FitTrack. Aplikasi ini m
 | **No Telepon** | Wajib diawali angka `0` dan minimal 10 digit | `"000000000000"` |
 | **Tanggal Daftar** | Wajib berformat ketat `dd-MM-yyyy` | `01-01-2026` |
 | **Jenis Paket** | Hanya menerima paket: `Basic`, `Premium`, atau `VIP` | `Basic` |
+
+---
+
+## Rencana Pengembangan Selanjutnya
+
+Fitur dan Peningkatan yang direncanakan untuk pengembangan sistem ke depan:
+
+1. **Penyimpanan Data Persisten (Database/File IO)**
+    Integrasi dengan basis data (seperti PostgreSQL/SQLite) atau serialisasi file (JSON/CSV) agar data member tersimpan secara permanen setelah program dihentikan.
+
+2. **Antarmuka Pengguna Grafis (GUI)**
+    Pengembangan tampilan berbasis antarmuka grafis menggunakan javaFX atau Swing untuk mempermudah manajemen data member dibandingkan melalui terminal/console.
+
+3. **Penerapan Pipeline Continuous Deployment (CD)**
+    Pengembangan otomatisasi deployment atau pengemasan aplikasi
