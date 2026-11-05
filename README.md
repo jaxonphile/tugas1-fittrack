@@ -44,7 +44,7 @@ Sistem pendataan member berbasis Java console untuk gym FitTrack. Aplikasi ini m
 │   ├── ☕ Member.java
 │   └── ☕ TesFitTrack.java
 ├── ⚙️ .gitignore
-├── 📄 LISENCE
+├── 📄 LICENSE
 └── 📝 README.md
 ```
 
